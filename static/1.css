@@ -12,7 +12,7 @@
     text-decoration: none; /* No underlines on the permalink anchors */
     color: #aaf;
 }
-.inlinelink:link, .inlinelink:visited
+.content a:link, .content a:visited
 {
     color: #fff; /* Leave links the same color as the background, just quietly make them clickable */
 }
