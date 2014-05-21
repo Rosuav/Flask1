@@ -1,9 +1,9 @@
-import flask
-app = flask.Flask(__name__)
+from flask import Flask, render_template
+app = Flask(__name__)
 
 @app.route("/")
 def view():
-	return flask.render_template("view.html")
+	return render_template("view.html")
 
 if __name__ == "__main__":
 	import logging
