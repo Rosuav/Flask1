@@ -68,10 +68,10 @@ def view():
 # been referenced as the directory name alone, and addent is private).
 @app.route("/addent.php")
 def addent_redirect():
-	return redirect(url_for('addent'))
+	return redirect(url_for('addent'), 301)
 @app.route("/index.php")
 def view_redirect():
-	return redirect(url_for('view'))
+	return redirect(url_for('view'), 301)
 
 @app.route("/addent")
 def addent():
