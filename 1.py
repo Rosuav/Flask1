@@ -17,7 +17,7 @@ def preformat(s):
 	indentation (by transforming leading spaces into &nbsp;) and other
 	sequences of blank spaces. Does not translate tabs.
 	"""
-	s = Markup.escape(s)
+	s = Markup.escape(s.decode('utf-8'))
 	s = s.replace("\n ",Markup("\n&nbsp;")) # Spaces after newlines become non-breaking
 	s = s.replace("  ",Markup(" &nbsp;")) # Repeated spaces alternate normal and non-breaking
 	s = s.replace("\r\n\r\n",Markup("</p>\n\n<p>")) # Double newlines become a paragraph
