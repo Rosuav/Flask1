@@ -1,11 +1,11 @@
-from flask import Flask, render_template, g, Markup, request
+from flask import Flask, render_template, g, Markup, request, redirect, url_for, Response
 import psycopg2
+import config # Local config variables and passwords, not in source control
 app = Flask(__name__)
 
 def get_db():
 	if not hasattr(g, 'pgsql'):
 		# Pull in the actual connection string from a non-git-managed file
-		import config
 		g.pgsql = psycopg2.connect(config.db_connection_string)
 	return g.pgsql
 
@@ -29,11 +29,19 @@ def preformat(s):
 
 @app.route("/")
 def view():
+	if 'q' in request.args:
+		if request.authorization and request.args['q']!='w':
+			return redirect(url_for('view'))
+		else:
+			return Response(
+				'<a href="'+url_for('view')+'">Invalid query, click here to retry</a>',
+				401, {'WWW-Authenticate': 'Basic realm="1"'})
+	auth = request.authorization
+	auth = bool(auth and config.auth == "%s/%s"%(auth.username, auth.password))
 	db = get_db()
 	query = "select id,date,title,content,publish from one where publish"
 	params = []
-	# TODO: Check query parameters and modify the SQL statement
-	# if authenticated: query += ">= false"
+	if auth: query += ">= false"
 	if 'id' in request.args:
 		query += " and id=%s"
 		params.append(request.args['id'])
@@ -53,7 +61,7 @@ def view():
 		rows.pop() # Discard the last row. We only care that it's present (and therefore we need a "More" link)
 		search = "" # ?search
 		morelink = '<p><a href="?search='+search+'&amp;more=1">More...</a></p>'
-	return render_template("view.html", rows=rows, more=more, morelink=morelink)
+	return render_template("view.html", rows=rows, more=more, morelink=morelink, auth=auth)
 
 if __name__ == "__main__":
 	import logging
