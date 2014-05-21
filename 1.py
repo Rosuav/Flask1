@@ -22,7 +22,7 @@ def preformat(s):
 	s = s.replace("  ",Markup(" &nbsp;")) # Repeated spaces alternate normal and non-breaking
 	s = s.replace("\r\n\r\n",Markup("</p>\n\n<p>")) # Double newlines become a paragraph
 	s = s.replace("\r\n",Markup("<br>\n")) # Single newlines become line breaks
-	return Markup(s)
+	return s
 
 @app.route("/")
 def view():
