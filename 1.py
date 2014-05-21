@@ -18,10 +18,10 @@ def preformat(s):
 	sequences of blank spaces. Does not translate tabs.
 	"""
 	s = Markup.escape(s.decode('utf-8'))
-	s = s.replace("\n ",Markup("\n&nbsp;")) # Spaces after newlines become non-breaking
-	s = s.replace("  ",Markup(" &nbsp;")) # Repeated spaces alternate normal and non-breaking
-	s = s.replace("\r\n\r\n",Markup("</p>\n\n<p>")) # Double newlines become a paragraph
-	s = s.replace("\r\n",Markup("<br>\n")) # Single newlines become line breaks
+	s = s.replace("\n ", Markup("\n&nbsp;")) # Spaces after newlines become non-breaking
+	s = s.replace("  ", Markup(" &nbsp;")) # Repeated spaces alternate normal and non-breaking
+	s = s.replace("\r\n\r\n", Markup("</p>\n\n<p>")) # Double newlines become a paragraph
+	s = s.replace("\r\n", Markup("<br>\n")) # Single newlines become line breaks
 	return s
 
 @app.route("/")
