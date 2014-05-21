@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g, Markup
+from flask import Flask, render_template, g, Markup, request
 import psycopg2
 app = Flask(__name__)
 
@@ -31,7 +31,9 @@ def view():
 	params = []
 	# TODO: Check query parameters and modify the SQL statement
 	# if authenticated: query += ">= false"
-	# if ?id: query += " and id=%s"; params.append(?id)
+	if 'id' in request.args:
+		query += " and id=%s"
+		params.append(request.args['id'])
 	# if ?search: query += " and (date=%s or title ilike %s or content ilike %s)"; params.extend((?search, "%"+?search+"%", "%"+?search+"%"))
 	more = False; # if ?more: more=True
 	# if ?recent: query += " order by id desc"; else:
