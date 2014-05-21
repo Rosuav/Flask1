@@ -16,12 +16,15 @@ def preformat(s):
 	Translates newlines into line breaks or paragraphs, preserving
 	indentation (by transforming leading spaces into &nbsp;) and other
 	sequences of blank spaces. Does not translate tabs.
+
+	Adds a space to the end of every logical line, to allow urlize to
+	run to the end of a line rather than try to swallow a <br> or </p>.
 	"""
 	s = Markup.escape(s.decode('utf-8'))
 	s = s.replace("\n ", Markup("\n&nbsp;")) # Spaces after newlines become non-breaking
 	s = s.replace("  ", Markup(" &nbsp;")) # Repeated spaces alternate normal and non-breaking
-	s = s.replace("\r\n\r\n", Markup("</p>\n\n<p>")) # Double newlines become a paragraph
-	s = s.replace("\r\n", Markup("<br>\n")) # Single newlines become line breaks
+	s = s.replace("\r\n\r\n", Markup(" </p>\n\n<p>")) # Double newlines become a paragraph
+	s = s.replace("\r\n", Markup(" <br>\n")) # Single newlines become line breaks
 	return s
 
 @app.route("/")
