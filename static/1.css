@@ -1,0 +1,19 @@
+.content
+{
+    background-color: #805;
+    color: #fff;
+    font-family: monospace;
+    padding: 0.001em 1em 0.001em 1em;
+}
+.pt {background-color: #302;}
+::selection {background: #aa0;}
+.permalink:link, .permalink:visited
+{
+    text-decoration: none; /* No underlines on the permalink anchors */
+    color: #aaf;
+}
+.inlinelink:link, .inlinelink:visited
+{
+    color: #fff; /* Leave links the same color as the background, just quietly make them clickable */
+}
+
