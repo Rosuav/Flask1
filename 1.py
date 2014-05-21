@@ -63,6 +63,21 @@ def view():
 		morelink = '<p><a href="?search='+search+'&amp;more=1">More...</a></p>'
 	return render_template("view.html", rows=rows, more=more, morelink=morelink, auth=auth)
 
+# The previous version of this web site used actual PHP files. Provide redirects
+# to catch any duff links (which shouldn't exist in the wild, as index will have
+# been referenced as the directory name alone, and addent is private).
+@app.route("/addent.php")
+def addent_redirect():
+	return redirect(url_for('addent'))
+@app.route("/index.php")
+def view_redirect():
+	return redirect(url_for('view'))
+
+@app.route("/addent")
+def addent():
+	# TODO!
+	return render_template("addent.html")
+
 if __name__ == "__main__":
 	import logging
 	logging.basicConfig(level=logging.DEBUG)
