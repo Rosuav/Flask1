@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, Markup
 import psycopg2
 app = Flask(__name__)
 
@@ -8,6 +8,21 @@ def get_db():
 		import config
 		g.pgsql = psycopg2.connect(config.db_connection_string)
 	return g.pgsql
+
+@app.template_filter('preformat')
+def preformat(s):
+	"""Preformat a block of text, converting it into HTML.
+
+	Translates newlines into line breaks or paragraphs, preserving
+	indentation (by transforming leading spaces into &nbsp;) and other
+	sequences of blank spaces. Does not translate tabs.
+	"""
+	s = Markup.escape(s)
+	s = s.replace("\n ",Markup("\n&nbsp;")) # Spaces after newlines become non-breaking
+	s = s.replace("  ",Markup(" &nbsp;")) # Repeated spaces alternate normal and non-breaking
+	s = s.replace("\r\n\r\n",Markup("</p>\n\n<p>")) # Double newlines become a paragraph
+	s = s.replace("\r\n",Markup("<br>\n")) # Single newlines become line breaks
+	return Markup(s)
 
 @app.route("/")
 def view():
