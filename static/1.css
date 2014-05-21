@@ -10,10 +10,9 @@
 .permalink:link, .permalink:visited
 {
     text-decoration: none; /* No underlines on the permalink anchors */
-    color: #aaf;
+    color: #aaf !important;
 }
 .content a:link, .content a:visited
 {
     color: #fff; /* Leave links the same color as the background, just quietly make them clickable */
 }
-
