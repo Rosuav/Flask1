@@ -1,0 +1,8 @@
+Rewrite of Rosuav's 1 in Python, using Flask.
+
+This is an "excuse plot" for my learning Flask, and doubles as a simple
+means of figuring out how long it took me to learn, starting about when
+this README was created. If any of the code is actually of use to any
+other person in this entire universe, I will be (a) highly impressed,
+and (b) highly amused. But hey. If you want it, let me know, I'll almost
+certainly say yes.
