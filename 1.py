@@ -75,8 +75,21 @@ def view_redirect():
 
 @app.route("/addent")
 def addent():
-	# TODO!
-	return render_template("addent.html")
+	auth = request.authorization
+	if not auth or config.auth != "%s/%s"%(auth.username, auth.password):
+		return redirect(url_for('view'))
+	db = get_db()
+	cur = db.cursor()
+	row = None
+	date, title, content, publish = '20131332', '', '', '' # TODO: Today's date in there
+	if 'id' in request.args:
+		cur.execute("select date,title,content,publish from one where id=%s",(request.args["id"],))
+		row = cur.fetchone()
+		if row:
+			date, title, content, publish = row
+			publish = Markup(('Currently published.' if publish else 'Private entry.') +
+				'<input type="hidden" name="id" value="' + request.args["id"] + '">')
+	return render_template("addent.html", date=date, title=title, content=content, publish=publish)
 
 if __name__ == "__main__":
 	import logging

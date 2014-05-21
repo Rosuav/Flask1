@@ -16,3 +16,13 @@
 {
     color: #fff; /* Leave links the same color as the background, just quietly make them clickable */
 }
+.status
+{
+    position: absolute;
+    right: 100px;
+    top: 10px;
+}
+.contentedit
+{
+    font-family: monospace;
+}

@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
-<p>Oops, unimplemented</p>
+<form action="addent" method="post">
+<input name="date" size=8 value="{{ date }}" class="contentedit"> <input name="title" size=72 value="{{ title }}" class="contentedit"><br>
+<textarea name="content" class="contentedit" rows=35 cols=80>{{ content }}</textarea><br>
+<input type=submit name="action" value="Publish"> <input type=submit name="action" value="Submit"> {{ publish }}
+</form>
 {% endblock %}
 
