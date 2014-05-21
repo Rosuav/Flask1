@@ -34,10 +34,13 @@ def view():
 	if 'id' in request.args:
 		query += " and id=%s"
 		params.append(request.args['id'])
-	# if ?search: query += " and (date=%s or title ilike %s or content ilike %s)"; params.extend((?search, "%"+?search+"%", "%"+?search+"%"))
-	more = False; # if ?more: more=True
-	# if ?recent: query += " order by id desc"; else:
-	query += " order by date desc, id desc"
+	search = request.args.get('search', '') # Needed for the more link too
+	if search:
+		query += " and (date=%s or title ilike %s or content ilike %s)"
+		params.extend((search, "%"+search+"%", "%"+search+"%"))
+	more = 'more' in request.args # We don't care what its value is - it might even be blank
+	if 'recent' in request.args: query += " order by id desc"
+	else: query += " order by date desc, id desc"
 	if not more: query += " limit 51"
 	cur = db.cursor()
 	cur.execute(query, params)
@@ -47,7 +50,7 @@ def view():
 		rows.pop() # Discard the last row. We only care that it's present (and therefore we need a "More" link)
 		search = "" # ?search
 		morelink = '<p><a href="?search='+search+'&amp;more=1">More...</a></p>'
-	return render_template("view.html", rows=rows, morelink=morelink)
+	return render_template("view.html", rows=rows, more=more, morelink=morelink)
 
 if __name__ == "__main__":
 	import logging

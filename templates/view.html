@@ -3,9 +3,13 @@
 <form method="get" action="."><p>Quick find: <input name="search"></p></form>
 {% for row in rows %}
 <div class="content p{{ row[4] }}"><p><a href="?id={{ row[0] }}" title="Permalink" class="permalink">{{ row[1] }}: {{ row[2] }}</a><!-- edit link here --><br>
+{% if more %}
+</p></div>
+{% else %}
 {{ row[3]|preformat|urlize }}
 </p></div>
 <hr>
+{% endif %}
 {% endfor %}
 {{ morelink|safe }}
 {% endblock %}
