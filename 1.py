@@ -62,6 +62,7 @@ def view():
 		rows.pop() # Discard the last row. We only care that it's present (and therefore we need a "More" link)
 		search = "" # ?search
 		morelink = '<p><a href="?search='+search+'&amp;more=1">More...</a></p>'
+	db.commit()
 	return render_template("view.html", rows=rows, more=more, morelink=morelink, auth=auth)
 
 # The previous version of this web site used actual PHP files. Provide redirects
@@ -90,6 +91,7 @@ def addent():
 			date, title, content, publish = row
 			publish = Markup(('Currently published.' if publish else 'Private entry.') +
 				'<input type="hidden" name="id" value="' + request.args["id"] + '">')
+	db.commit()
 	return render_template("addent.html", date=date, title=title, content=content, publish=publish)
 
 if __name__ == "__main__":
