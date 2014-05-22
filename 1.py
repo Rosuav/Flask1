@@ -75,7 +75,7 @@ def addent_redirect():
 def view_redirect():
 	return redirect(url_for('view'), 301)
 
-@app.route("/addent")
+@app.route("/addent", methods=["GET", "POST"])
 def addent():
 	auth = request.authorization
 	if not auth or config.auth != "%s/%s"%(auth.username, auth.password):
@@ -91,8 +91,20 @@ def addent():
 			date, title, content, publish = row
 			publish = Markup(('Currently published.' if publish else 'Private entry.') +
 				'<input type="hidden" name="id" value="' + request.args["id"] + '">')
+	savenote = ""
+	if request.method == "POST":
+		rf = request.form # We're gonna do a lot with this
+		if "id" in rf:
+			cur.execute("update one set date=%s,title=%s,content=%s,publish=%s where id=%s",
+				(rf["date"], rf["title"], rf["content"], rf['action'] == 'Publish', rf["id"]))
+			savenote = '<div class="status"><a href=".?id=' + rf['id'] + '">Updated.</a></div>'
+		else:
+			cur.execute("insert into one (date,title,content,publish) values (%s,%s,%s,%s) returning id",
+				(rf["date"], rf["title"], rf["content"], rf['action'] == 'Publish'))
+			savenote = '<div class="status"><a href=".?id=%d">Inserted.</a></div>' % cur.fetchone()[0]
 	db.commit()
-	return render_template("addent.html", date=date, title=title, content=content, publish=publish)
+	return render_template("addent.html", date=date, title=title,
+		content=content, publish=publish, savenote=Markup(savenote))
 
 if __name__ == "__main__":
 	import logging
