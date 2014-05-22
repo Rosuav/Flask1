@@ -1,5 +1,6 @@
 from flask import Flask, render_template, g, Markup, request, redirect, url_for, Response
 import psycopg2
+import time
 import config # Local config variables and passwords, not in source control
 app = Flask(__name__)
 
@@ -81,7 +82,7 @@ def addent():
 	db = get_db()
 	cur = db.cursor()
 	row = None
-	date, title, content, publish = '20131332', '', '', '' # TODO: Today's date in there
+	date, title, content, publish = time.strftime("%Y%m%d"), '', '', ''
 	if 'id' in request.args:
 		cur.execute("select date,title,content,publish from one where id=%s",(request.args["id"],))
 		row = cur.fetchone()
