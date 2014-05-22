@@ -6,3 +6,17 @@ this README was created. If any of the code is actually of use to any
 other person in this entire universe, I will be (a) highly impressed,
 and (b) highly amused. But hey. If you want it, let me know, I'll almost
 certainly say yes.
+
+Six and a half active hours later, all inside one 24-hour period, the job
+is done. This is now the primary codebase for Rosuav's 1, and is complete
+but for a file of authentication details (database connection string etc)
+which stays out of git (for obvious reasons!). Adding in time documenting
+all of this, and I'd say Flask took me seven hours to learn. Not bad. I'd
+say that means Flask is fairly compact, at least to the extent of a basic
+interactive web site. (This is, admittedly, one of the simplest sites you
+could write.) Note that, due to Gideon's restrictions, this code has been
+written for Python 2; for future work, I would prefer to use Python 3, as
+long as there's at least a 3.3 available - preferably 3.5 for the sake of
+PEP 461, but 3.5 hasn't been released yet, as of 20140522 - so this code,
+simple as it is, probably won't be reused anywhere, ever. Still, it's all
+been worth the learning. Build one to throw away, they say.
