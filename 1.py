@@ -31,7 +31,7 @@ def preformat(s):
 @app.template_filter('trimspaces')
 def trimspaces(s):
 	"""After urlize, trim off the extra spaces from preformat()."""
-	return s.replace(" </p>",Markup("</p>")).replace(" <br>",Markup("<br>"))
+	return s.replace(Markup(" </p>"),Markup("</p>")).replace(Markup(" <br>"),Markup("<br>"))
 
 @app.route("/")
 def view():
