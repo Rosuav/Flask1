@@ -7,7 +7,7 @@
 {% if more %}
 </p></div>
 {% else %}
-{{ row[3]|preformat|urlize }}
+{{ row[3]|preformat|urlize|trimspaces }}
 </p></div>
 <hr>
 {% endif %}

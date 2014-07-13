@@ -28,6 +28,11 @@ def preformat(s):
 	s = s.replace("\r\n", Markup(" <br>\n")) # Single newlines become line breaks
 	return s
 
+@app.template_filter('trimspaces')
+def trimspaces(s):
+	"""After urlize, trim off the extra spaces from preformat()."""
+	return s.replace(" </p>",Markup("</p>")).replace(" <br>",Markup("<br>"))
+
 @app.route("/")
 def view():
 	if 'q' in request.args:
