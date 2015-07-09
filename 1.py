@@ -29,7 +29,8 @@ def preformat(s):
 	Adds a space to the end of every logical line, to allow urlize to
 	run to the end of a line rather than try to swallow a <br> or </p>.
 	"""
-	s = Markup.escape(s.decode('utf-8'))
+	if not isinstance(s, unicode): s = s.decode("utf-8")
+	s = Markup.escape(s)
 	s = s.replace("\n ", Markup("\n&nbsp;")) # Spaces after newlines become non-breaking
 	s = s.replace("  ", Markup(" &nbsp;")) # Repeated spaces alternate normal and non-breaking
 	s = s.replace("\r\n\r\n", Markup(" </p>\n\n<p>")) # Double newlines become a paragraph
