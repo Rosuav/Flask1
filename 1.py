@@ -3,6 +3,8 @@ import psycopg2
 import time
 import config # Local config variables and passwords, not in source control
 app = Flask(__name__)
+try: unicode
+except NameError: unicode = str
 
 # Enable Unicode return values for all database queries
 # This would be the default in Python 3, but in Python 2, we
