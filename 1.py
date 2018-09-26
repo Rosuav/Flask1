@@ -134,8 +134,11 @@ def postfix():
 		if not line.startswith("{"): continue
 		proc = json.loads(line)
 		if "_PID" not in proc: continue
-		response += '<li><a href="/postfix/%s">%s: %s</a></li>' % (
-			proc["_PID"], proc["_PID"], proc["_EXE"])
+		if "_EXE" in proc:
+			response += '<li><a href="/postfix/%s">%s: %s</a></li>' % (
+				proc["_PID"], proc["_PID"], proc["_EXE"])
+		else:
+			response += '<li>%s: nothing readable</li>' % proc["_PID"]
 	return response + "</ul>"
 
 @app.route("/postfix/<id>")
@@ -144,7 +147,7 @@ def postfix_proc(id):
 	for line in info.decode().split("\n\n")[-1].split("\n"):
 		if not line.startswith("{"): continue
 		proc = json.loads(line)
-		if proc["_PID"] == id:
+		if proc.get("_PID") == id and "_EXE" in proc:
 			return subprocess.check_output(["hd", proc["_EXE"]])
 	return "Unauthorized or too slow", 401
 
