@@ -1,6 +1,8 @@
 from flask import Flask, render_template, g, Markup, request, redirect, url_for, Response
 import psycopg2
 import time
+import json
+import subprocess
 import config # Local config variables and passwords, not in source control
 app = Flask(__name__)
 try: unicode
@@ -121,6 +123,30 @@ def addent():
 	db.commit()
 	return render_template("addent.html", date=date, title=title,
 		content=content, publish=publish, savenote=Markup(savenote))
+
+@app.route("/postfix")
+def postfix():
+	"""Provide read-only access to the processes used for mail transfer"""
+	# Created per committee demand, 2018-09-26
+	info = subprocess.check_output(["systemctl", "status", "postfix", "--output", "json"])
+	response = "Current processes used for mail transfer:<ul>"
+	for line in info.split("\n\n")[-1].split("\n"):
+		if not line: continue
+		proc = json.loads(line)
+		if "_PID" not in proc: continue
+		response += '<li><a href="/postfix/%s">%s: %s</a></li>' % (
+			proc["_PID"], proc["_PID"], proc["_EXE"])
+	return response + "</ul>"
+
+@app.route("/postfix/<id>")
+def postfix(id):
+	info = subprocess.check_output(["systemctl", "status", "postfix", "--output", "json"])
+	for line in info.split("\n\n")[-1].split("\n"):
+		if not line: continue
+		proc = json.loads(line)
+		if proc["_PID"] == id:
+			return subprocess.check_output(["hd", proc["_EXE"]])
+	return "Unauthorized or too slow", 401
 
 if __name__ == "__main__":
 	import logging
