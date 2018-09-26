@@ -128,7 +128,7 @@ def addent():
 def postfix():
 	"""Provide read-only access to the processes used for mail transfer"""
 	# Created per committee demand, 2018-09-26
-	info = subprocess.check_output(["systemctl", "status", "postfix", "--output", "json"])
+	info = subprocess.check_output(["sudo", "systemctl", "status", "postfix", "--output", "json"])
 	response = "Current processes used for mail transfer:<ul>"
 	for line in info.split(b"\n\n")[-1].split(b"\n"):
 		if not line.startswith(b"{"): continue
@@ -140,7 +140,7 @@ def postfix():
 
 @app.route("/postfix/<id>")
 def postfix_proc(id):
-	info = subprocess.check_output(["systemctl", "status", "postfix", "--output", "json"])
+	info = subprocess.check_output(["sudo", "systemctl", "status", "postfix", "--output", "json"])
 	for line in info.split(b"\n\n")[-1].split(b"\n"):
 		if not line.startswith(b"{"): continue
 		proc = json.loads(line)
