@@ -130,8 +130,8 @@ def postfix():
 	# Created per committee demand, 2018-09-26
 	info = subprocess.check_output(["systemctl", "status", "postfix", "--output", "json"])
 	response = "Current processes used for mail transfer:<ul>"
-	for line in info.split("\n\n")[-1].split("\n"):
-		if not line: continue
+	for line in info.split(b"\n\n")[-1].split(b"\n"):
+		if not line.startswith(b"{"): continue
 		proc = json.loads(line)
 		if "_PID" not in proc: continue
 		response += '<li><a href="/postfix/%s">%s: %s</a></li>' % (
@@ -141,8 +141,8 @@ def postfix():
 @app.route("/postfix/<id>")
 def postfix_proc(id):
 	info = subprocess.check_output(["systemctl", "status", "postfix", "--output", "json"])
-	for line in info.split("\n\n")[-1].split("\n"):
-		if not line: continue
+	for line in info.split(b"\n\n")[-1].split(b"\n"):
+		if not line.startswith(b"{"): continue
 		proc = json.loads(line)
 		if proc["_PID"] == id:
 			return subprocess.check_output(["hd", proc["_EXE"]])
