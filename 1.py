@@ -139,7 +139,7 @@ def postfix():
 	return response + "</ul>"
 
 @app.route("/postfix/<id>")
-def postfix(id):
+def postfix_proc(id):
 	info = subprocess.check_output(["systemctl", "status", "postfix", "--output", "json"])
 	for line in info.split("\n\n")[-1].split("\n"):
 		if not line: continue
