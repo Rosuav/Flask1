@@ -124,7 +124,7 @@ def addent():
 	return render_template("addent.html", date=date, title=title,
 		content=content, publish=publish, savenote=Markup(savenote))
 
-@app.route("/postfix")
+@app.route("/postfix/")
 def postfix():
 	"""Provide read-only access to the processes used for mail transfer"""
 	# Created per committee demand, 2018-09-26
@@ -135,7 +135,7 @@ def postfix():
 		proc = json.loads(line)
 		if "_PID" not in proc: continue
 		if "_EXE" in proc:
-			response += '<li><a href="/postfix/%s">%s: %s</a></li>' % (
+			response += '<li><a href="%s">%s: %s</a></li>' % (
 				proc["_PID"], proc["_PID"], proc["_EXE"])
 		else:
 			response += '<li>%s: nothing readable</li>' % proc["_PID"]
