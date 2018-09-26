@@ -148,7 +148,7 @@ def postfix_proc(id):
 		if not line.startswith("{"): continue
 		proc = json.loads(line)
 		if proc.get("_PID") == id and "_EXE" in proc:
-			return subprocess.check_output(["hd", proc["_EXE"]])
+			return b"<pre>\r\n" + subprocess.check_output(["hd", proc["_EXE"]]) + "</pre>"
 	return "Unauthorized or too slow", 401
 
 if __name__ == "__main__":
